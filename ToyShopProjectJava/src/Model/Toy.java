@@ -1,75 +1,51 @@
 package Model;
 
-public class Toy
+public class Toy 
 {
-private int id;
-private String name;
-private int weight;
-private int quantity;
+    private int id;
+    private String name;
+    private int weight;
+    private int quantity;
 
-public Toy(int id, String name, int weight, int quantity)
-        {
+    public Toy(int id, String name, int weight, int quantity) 
+    {
         this.id = id;
         this.name = name;
-        this.weight = weight;
+        this.weight = Math.min(weight, 100);
         this.quantity = quantity;
-        }
+    }
 
-public int getId()
-        {
+    public int getId() 
+    {
         return id;
-        }
+    }
 
-public String getName()
-        {
+    public String getName() 
+    {
         return name;
-        }
+    }
 
-public int getWeight()
-        {
+    public int getWeight() 
+    {
         return weight;
-        }
+    }
 
-public int getQuantity()
-        {
+    public void setWeight(int weight) 
+    {
+        this.weight = Math.min(weight, 100);
+    }
+
+    public int getQuantity() 
+    {
         return quantity;
-        }
+    }
 
-public void setId(int id)
+    public void decreaseQuantity() 
+    {
+        if(quantity > 0) 
         {
-        this.id = id;
+            quantity--;
         }
-
-public void setName(String name)
-        {
-        this.name = name;
-        }
-
-public void setWeight(int weight)
-        {
-        this.weight = weight;
-        }
-
-public void setQuantity(int fallingRate)
-        {
-        this.quantity = quantity;
-        }
-
-public void decreaseQuantity()
-        {
-        if (quantity > 0)
-        {
-        quantity--;
-        }
-        }
-
-@Override
-public String toString()
-        {
-        StringBuilder sb = new StringBuilder();
-        sb.append("\n").append(id).append(name).append(weight).append(quantity);
-        return sb.toString();
-        }
-        }
-
+    }
+}
 

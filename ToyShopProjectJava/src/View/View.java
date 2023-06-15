@@ -2,9 +2,9 @@ package View;
 
 import Presenter.Presenter;
 
-public interface View
-{
+import Model.Toy;
 
-    void setPresenter(Presenter presenter);
-    void startProgram();
+public interface View
+ {
+    void showPrize(Toy toy);
 }

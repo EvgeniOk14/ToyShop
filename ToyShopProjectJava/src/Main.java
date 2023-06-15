@@ -1,29 +1,24 @@
-import java.util.Comparator;
-import java.util.PriorityQueue;
 
-
-
-import Model.Toy;
-import Model.CreateToy;
-import Model.Service;
 import Presenter.Presenter;
 import View.Console;
 import View.View;
 
-import java.security.Provider;
-import java.util.Comparator;
-import java.util.PriorityQueue;
 
-        public class Main
-        {
+    public class Main {
+    public static void main(String[] args) {
+        View view = new Console();
+        Presenter presenter = new Presenter(view);
 
-            public static void main(String[] args)
-            {
-                Service service = new Service();
-                View view = new Console();
-                PriorityQueue<Toy> toyQueue = new PriorityQueue<>(Comparator.comparingInt(Toy::getWeight).reversed());
-                Presenter pr = new Presenter(service, view, toyQueue);
-                view.startProgram();
-            }
-        }
 
+        presenter.addToy(1, "Робот", 50, 2);
+        presenter.addToy(2, "Кукла", 30, 3);
+        presenter.addToy(3, "Ракета", 10, 4);
+        presenter.addToy(4, "Конструктор", 10, 1);
+
+
+        presenter.updateWeight(1, 70);
+
+
+        presenter.startRaffle();
+    }
+}

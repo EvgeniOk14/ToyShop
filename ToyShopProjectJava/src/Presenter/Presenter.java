@@ -1,53 +1,95 @@
 package Presenter;
 
 import Model.Toy;
-import Model.Service;
 import View.View;
 
-import java.util.Comparator;
-import java.util.PriorityQueue;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.*;
 
-public class Presenter
+
+
+
+public class Presenter 
 {
-    private Service service;
     private View view;
     private PriorityQueue<Toy> toyQueue;
 
-    public Presenter(Service service, View view, PriorityQueue<Toy> toyQueue) {
-        this.service = service;
+    public Presenter(View view) 
+    {
         this.view = view;
         this.toyQueue = new PriorityQueue<>(Comparator.comparingInt(Toy::getWeight).reversed());
     }
 
-    public void setToyQueue(PriorityQueue<Toy> toyQueue) {
-        this.toyQueue = toyQueue;
+    public void addToy(int id, String name, int weight, int quantity) {
+        int clampedWeight = Math.min(weight, 100);
+        Toy toy = new Toy(id, name, clampedWeight, quantity);
+        toyQueue.add(toy);
     }
 
-    public void setService(Service service)
-    {
-        this.service = service;
-    }
-    public void setView(View view)
-    {
-        this.view = view;
-    }
-    public void setToyQueueo(PriorityQueue<Toy> toyQueue)
-    {
-        this.toyQueue = toyQueue;
+    public void updateWeight(int toyId, int weight) {
+        int clampedWeight = Math.min(weight, 100);
+        for (Toy toy : toyQueue) {
+            if (toy.getId() == toyId) {
+                toy.setWeight(clampedWeight);
+                break;
+            }
+        }
     }
 
-    public void PresenterUpdateWeight()
-    {
+    public void startRaffle() {
+        List<Toy> prizes = new ArrayList<>();
 
-        service.serviceUpdateWeight();
+        for (int i = 0; i < 10; i++) {
+            Toy prize = drawPrize();
+            if (prize == null) {
+                break;
+            }
+
+            prizes.add(prize);
+            prize.decreaseQuantity();
+            view.showPrize(prize);
+        }
+
+        writePrizesToFile(prizes);
     }
 
-    public void presenterCreateToy()
-    {
-        service.serviceCreateToy();
+    private Toy drawPrize() {
+        Random random = new Random();
+        List<Toy> availableToys = new ArrayList<>();
+
+        for (Toy toy : toyQueue) {
+            if (toy.getQuantity() > 0) {
+                availableToys.add(toy);
+            }
+        }
+
+        if (availableToys.isEmpty()) {
+            return null;
+        }
+
+        int totalWeight = availableToys.stream().mapToInt(Toy::getWeight).sum();
+        int randomNumber = random.nextInt(totalWeight);
+
+        int accumulatedWeight = 0;
+        for (Toy toy : availableToys) {
+            accumulatedWeight += toy.getWeight();
+            if (randomNumber < accumulatedWeight) {
+                return toy;
+            }
+        }
+
+        return null;
     }
-    public void PresenterStartLottery()
-    {
-        service.serviceStartLottery();
+
+    private void writePrizesToFile(List<Toy> prizes) {
+        try (FileWriter writer = new FileWriter("prizes.txt")) {
+            for (Toy toy : prizes) {
+                writer.write("Игрушка: " + toy.getName() + ", вес: " + toy.getWeight() + "\n");
+            }
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
