@@ -47,5 +47,9 @@ public class Toy
             quantity--;
         }
     }
+
+    public static Toy get(int i) {
+        return Toy.get(i);
+    }
 }
 
