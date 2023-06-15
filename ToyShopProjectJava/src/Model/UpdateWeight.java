@@ -1,4 +1,4 @@
-package Modul;
+package Model;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;

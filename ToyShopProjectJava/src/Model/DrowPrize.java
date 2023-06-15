@@ -1,4 +1,4 @@
-package Modul;
+package Model;
 
 import java.util.*;
 
@@ -11,7 +11,7 @@ public class DrowPrize
         this.toyQueue = new PriorityQueue<>(Comparator.comparingInt(Toy::getWeight).reversed());
     }
 
-    public Toy drawPrise()
+    public Toy drowPrize()
     {
         Random random = new Random();
         List<Toy> availableToys = new ArrayList<>();
